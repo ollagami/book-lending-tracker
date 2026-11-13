@@ -1,173 +1,154 @@
 /*
-  Book Lending Tracker
-  Written with the jQuery JavaScript library.
+  BookLib - the JavaScript library of the Book Lending Tracker.
+  Every page loads this file first and then uses BookLib.* in its own script.
 */
-$(function () {
-  "use strict";
+const BookLib = (function () {
+  const STORAGE_KEY = "loans";
 
-  var STORAGE_KEY = "book-lending-tracker";
-  var loans = loadLoans();
-
-  /* ---------- Storage ---------- */
-  function loadLoans() {
+  /* ---------- localStorage ---------- */
+  function getLoans() {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return Array.isArray(data) ? data : [];
     } catch (e) {
       return [];
     }
   }
 
-  function saveLoans() {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(loans));
-    } catch (e) { /* storage not available */ }
+  function saveLoans(loans) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(loans));
   }
 
-  /* ---------- Dates ---------- */
-  function todayISO() {
-    var d = new Date();
+  function addLoan(loan) {
+    const loans = getLoans();
+    const newLoan = Object.assign({ id: Date.now(), returned: false }, loan);
+    loans.push(newLoan);
+    saveLoans(loans);
+    return newLoan;
+  }
+
+  function updateLoan(id, changes) {
+    saveLoans(getLoans().map((l) => (l.id === id ? Object.assign({}, l, changes) : l)));
+  }
+
+  function deleteLoan(id) {
+    saveLoans(getLoans().filter((l) => l.id !== id));
+  }
+
+  function findLoan(id) {
+    return getLoans().find((l) => l.id === id);
+  }
+
+  /* ---------- Dates and status ---------- */
+  function today() {
+    const d = new Date();
     d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
     return d.toISOString().slice(0, 10);
   }
 
   function isOverdue(loan) {
-    return !loan.returned && loan.dueDate < todayISO();
+    return !loan.returned && loan.dueDate < today();
   }
 
-  function formatDate(iso) {
-    var p = iso.split("-");
-    return new Date(+p[0], +p[1] - 1, +p[2]).toLocaleDateString(undefined, {
-      year: "numeric", month: "short", day: "numeric"
-    });
+  function getStatus(loan) {
+    if (loan.returned) return "Returned";
+    return isOverdue(loan) ? "Overdue" : "On loan";
   }
 
-  /* ---------- Rendering ---------- */
-  function statusBadge(loan) {
-    if (loan.returned) return $("<span>").addClass("badge text-bg-success").text("Returned");
-    if (isOverdue(loan)) return $("<span>").addClass("badge text-bg-danger").text("Overdue");
-    return $("<span>").addClass("badge text-bg-warning").text("On loan");
+  function statusBadgeClass(loan) {
+    const status = getStatus(loan);
+    if (status === "Returned") return "badge text-bg-success";
+    if (status === "Overdue") return "badge text-bg-danger";
+    return "badge text-bg-warning";
   }
 
-  function actionButtons(loan) {
-    var $wrap = $("<div>").addClass("d-flex gap-2");
-    if (!loan.returned) {
-      $("<button>")
-        .attr("type", "button")
-        .addClass("btn btn-sm btn-success js-return")
-        .attr("data-id", loan.id)
-        .text("Mark returned")
-        .appendTo($wrap);
+  /* ---------- Summary ---------- */
+  function getSummary() {
+    const loans = getLoans();
+    const active = loans.filter((l) => !l.returned);
+    return {
+      total: active.length,
+      overdue: active.filter(isOverdue).length,
+      returned: loans.length - active.length,
+      all: loans.length
+    };
+  }
+
+  /* ---------- Validation (Title, Author, Borrower, Due date, Genre are required) ---------- */
+  function validateLoan(loan) {
+    return {
+      title: loan.title === "" ? "Title is required." : "",
+      author: loan.author === "" ? "Author is required." : "",
+      borrower: loan.borrower === "" ? "Borrower is required." : "",
+      dueDate: loan.dueDate === "" ? "Due date is required." : "",
+      genre: loan.genre === "" ? "Please choose a genre." : ""
+    };
+  }
+
+  function readLoanForm(form) {
+    return {
+      title: form.elements.title.value.trim(),
+      author: form.elements.author.value.trim(),
+      borrower: form.elements.borrower.value.trim(),
+      dueDate: form.elements.dueDate.value,
+      genre: form.elements.genre.value
+    };
+  }
+
+  // Shows the errors under each field. Returns true when the form is valid.
+  function showErrors(form, errors) {
+    let valid = true;
+    for (const field in errors) {
+      const input = form.elements[field];
+      const box = form.querySelector('.error[data-for="' + field + '"]');
+      input.classList.toggle("is-invalid", !!errors[field]);
+      if (box) box.textContent = errors[field];
+      if (errors[field]) valid = false;
     }
-    $("<button>")
-      .attr("type", "button")
-      .addClass("btn btn-sm btn-outline-danger js-delete")
-      .attr("data-id", loan.id)
-      .text("Delete")
-      .appendTo($wrap);
-    return $wrap;
+    return valid;
   }
 
-  function renderTable() {
-    var $body = $("#loan-table-body").empty();
-    var sorted = loans.slice().sort(function (a, b) {
-      return a.dueDate.localeCompare(b.dueDate);
-    });
-
-    if (!sorted.length) {
-      $body.append(
-        $("<tr>").append(
-          $("<td>").attr("colspan", 7).addClass("text-center text-secondary py-4")
-            .text("No books lent yet. Add one in the \"Lend a book\" tab.")
-        )
-      );
-      return;
-    }
-
-    $.each(sorted, function (_, loan) {
-      $("<tr>")
-        .append($("<td>").text(loan.title))
-        .append($("<td>").text(loan.author))
-        .append($("<td>").text(loan.borrower))
-        .append($("<td>").text(formatDate(loan.dueDate)))
-        .append($("<td>").text(loan.genre))
-        .append($("<td>").append(statusBadge(loan)))
-        .append($("<td>").append(actionButtons(loan)))
-        .appendTo($body);
-    });
+  function clearErrors(form) {
+    form.querySelectorAll(".is-invalid").forEach((el) => el.classList.remove("is-invalid"));
   }
 
-  function renderSummary() {
-    var active = $.grep(loans, function (l) { return !l.returned; });
-    var overdue = $.grep(active, function (l) { return isOverdue(l); });
-    $("#total-loans").text(active.length);
-    $("#overdue-loans").text(overdue.length);
+  /* ---------- UI helpers ---------- */
+  function showToast(message) {
+    const toast = document.getElementById("toast");
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2000);
   }
 
-  function render() {
-    renderTable();
-    renderSummary();
+  function startClock() {
+    const tick = () => {
+      const clock = document.getElementById("clock");
+      if (clock) clock.textContent = new Date().toLocaleTimeString();
+    };
+    tick();
+    setInterval(tick, 1000);
   }
 
-  function update() {
-    saveLoans();
-    render();
-  }
+  return {
+    getLoans,
+    saveLoans,
+    addLoan,
+    updateLoan,
+    deleteLoan,
+    findLoan,
+    today,
+    isOverdue,
+    getStatus,
+    statusBadgeClass,
+    getSummary,
+    validateLoan,
+    readLoanForm,
+    showErrors,
+    clearErrors,
+    showToast,
+    startClock
+  };
+})();
 
-  /* ---------- Form ---------- */
-  $("#loan-form").on("submit", function (event) {
-    event.preventDefault();
-    var $form = $(this);
-    var valid = true;
-    var values = {};
-
-    $form.find("input, select").each(function () {
-      var $field = $(this);
-      var value = $.trim($field.val());
-      var missing = $field.prop("required") && !value;
-      $field.toggleClass("is-invalid", missing);
-      if (missing) valid = false;
-      values[$field.attr("name")] = value;
-    });
-
-    if (!valid) return;
-
-    loans.push({
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      title: values.title,
-      author: values.author,
-      borrower: values.borrower,
-      dueDate: values.dueDate,
-      genre: values.genre,
-      returned: false
-    });
-    update();
-
-    this.reset();
-    $form.find(".is-invalid").removeClass("is-invalid");
-    bootstrap.Tab.getOrCreateInstance(document.getElementById("books-tab")).show();
-  });
-
-  $("#loan-form").on("reset", function () {
-    $(this).find(".is-invalid").removeClass("is-invalid");
-  });
-
-  $("#loan-form").on("input change", ".is-invalid", function () {
-    if ($.trim($(this).val())) $(this).removeClass("is-invalid");
-  });
-
-  /* ---------- Table actions ---------- */
-  $("#loan-table-body").on("click", ".js-return", function () {
-    var id = $(this).attr("data-id");
-    $.each(loans, function (_, l) { if (l.id === id) l.returned = true; });
-    update();
-  });
-
-  $("#loan-table-body").on("click", ".js-delete", function () {
-    var id = $(this).attr("data-id");
-    if (!confirm("Delete this loan?")) return;
-    loans = $.grep(loans, function (l) { return l.id !== id; });
-    update();
-  });
-
-  render();
-});
+BookLib.startClock();
