@@ -14,24 +14,15 @@ A page that tracks lent books, built with only HTML, CSS and JavaScript.
 - Data is saved in the browser (localStorage)
 
 ## Libraries
-| File | Library | Description |
-|------|---------|-------------|
-| `styles.css` | **MiniUI CSS library** | Reusable `ui-` classes: layout, cards, forms, buttons, table, badges, stats, tabs, links. Theme with `--ui-*` variables. |
-| `app.js` | **BookLending JS library** | Reusable library exposed as `window.BookLending` with a public API. |
+| Type | Library | Used in |
+|------|---------|---------|
+| CSS | [Bootstrap 5.3](https://getbootstrap.com/) | `index.html` (only Bootstrap classes, `styles.css` has no custom styles) |
+| JavaScript | [jQuery 3.7](https://jquery.com/) | `app.js` (all app logic written with jQuery) |
 
-The page uses only these two libraries.
-
-### JS library API
-```js
-BookLending.init({ form, tableBody, totalEl, overdueEl, tabs, listTab, storageKey, emptyText });
-BookLending.addLoan({ title, author, borrower, dueDate, genre });
-BookLending.markReturned(id);
-BookLending.removeLoan(id);
-BookLending.getLoans();
-BookLending.getSummary();   // { total, overdue }
-BookLending.tabs("#tabs");  // make any .ui-tabs element work
-BookLending.utils;          // el, formatDate, isPast, createStore, readForm, ...
-```
+## Files
+- `index.html` – page structure (Bootstrap)
+- `styles.css` – no custom CSS; the page uses only Bootstrap
+- `app.js` – app logic (jQuery)
 
 ## Workflow
 Every feature was added to `main` through its own branch and Pull Request.
