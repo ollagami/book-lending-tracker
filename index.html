@@ -4,82 +4,87 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Lending Tracker</title>
-  <!-- CSS library -->
+
+  <!-- CSS library: Bootstrap 5 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <main class="ui-container ui-stack">
-    <header>
-      <h1 class="ui-title">Book Lending Tracker</h1>
-      <p class="ui-subtitle">Keep track of the books you lend out and when they are due back.</p>
+<body class="bg-light">
+  <main class="container py-4">
+    <header class="mb-4">
+      <h1 class="h2 fw-bold">Book Lending Tracker</h1>
+      <p class="text-secondary mb-0">Keep track of the books you lend out and when they are due back.</p>
     </header>
 
     <!-- Tabs -->
-    <nav class="ui-tabs" id="tabs" aria-label="Sections">
-      <button type="button" class="ui-tab" data-tab="tab-lend">Lend a book</button>
-      <button type="button" class="ui-tab" data-tab="tab-books">Lent books</button>
-      <button type="button" class="ui-tab" data-tab="tab-summary">Summary</button>
-    </nav>
+    <ul class="nav nav-tabs" id="tabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="lend-tab" data-bs-toggle="tab" data-bs-target="#lend" type="button" role="tab">Lend a book</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab">Lent books</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
+      </li>
+    </ul>
 
-    <!-- Tab 1: Form -->
-    <section class="ui-tab-panel" id="tab-lend">
-      <div class="ui-card">
-        <h2 class="ui-heading">Lend a book</h2>
-        <form id="loan-form" novalidate>
-          <div class="ui-grid">
-            <div class="ui-field">
-              <label class="ui-label" for="title">Title <span class="ui-required">*</span></label>
-              <input class="ui-input" type="text" id="title" name="title" required>
-              <span class="ui-error" data-error-for="title"></span>
-            </div>
-            <div class="ui-field">
-              <label class="ui-label" for="author">Author <span class="ui-required">*</span></label>
-              <input class="ui-input" type="text" id="author" name="author" required>
-              <span class="ui-error" data-error-for="author"></span>
-            </div>
-            <div class="ui-field">
-              <label class="ui-label" for="borrower">Borrower <span class="ui-required">*</span></label>
-              <input class="ui-input" type="text" id="borrower" name="borrower" required>
-              <span class="ui-error" data-error-for="borrower"></span>
-            </div>
-            <div class="ui-field">
-              <label class="ui-label" for="dueDate">Due date <span class="ui-required">*</span></label>
-              <input class="ui-input" type="date" id="dueDate" name="dueDate" required>
-              <span class="ui-error" data-error-for="dueDate"></span>
-            </div>
-            <div class="ui-field">
-              <label class="ui-label" for="genre">Genre <span class="ui-required">*</span></label>
-              <select class="ui-select" id="genre" name="genre" required>
-                <option value="">Select a genre</option>
-                <option>Fiction</option>
-                <option>Non-fiction</option>
-                <option>Fantasy</option>
-                <option>Science Fiction</option>
-                <option>Mystery</option>
-                <option>Romance</option>
-                <option>Biography</option>
-                <option>History</option>
-                <option>Science</option>
-                <option>Other</option>
-              </select>
-              <span class="ui-error" data-error-for="genre"></span>
-            </div>
+    <div class="tab-content bg-white border border-top-0 rounded-bottom p-4 mb-4">
+
+      <!-- Tab 1: Form -->
+      <section class="tab-pane fade show active" id="lend" role="tabpanel">
+        <h2 class="h5 mb-3">Lend a book</h2>
+        <form id="loan-form" class="row g-3" novalidate>
+          <div class="col-md-4">
+            <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="title" name="title" required>
+            <div class="invalid-feedback">Title is required.</div>
           </div>
-          <div class="ui-actions">
-            <button type="submit" class="ui-btn ui-btn-primary">Add loan</button>
-            <button type="reset" class="ui-btn">Clear</button>
+          <div class="col-md-4">
+            <label for="author" class="form-label">Author <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="author" name="author" required>
+            <div class="invalid-feedback">Author is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="borrower" class="form-label">Borrower <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="borrower" name="borrower" required>
+            <div class="invalid-feedback">Borrower is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="dueDate" class="form-label">Due date <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="dueDate" name="dueDate" required>
+            <div class="invalid-feedback">Due date is required.</div>
+          </div>
+          <div class="col-md-4">
+            <label for="genre" class="form-label">Genre <span class="text-danger">*</span></label>
+            <select class="form-select" id="genre" name="genre" required>
+              <option value="">Select a genre</option>
+              <option>Fiction</option>
+              <option>Non-fiction</option>
+              <option>Fantasy</option>
+              <option>Science Fiction</option>
+              <option>Mystery</option>
+              <option>Romance</option>
+              <option>Biography</option>
+              <option>History</option>
+              <option>Science</option>
+              <option>Other</option>
+            </select>
+            <div class="invalid-feedback">Genre is required.</div>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">Add loan</button>
+            <button type="reset" class="btn btn-outline-secondary">Clear</button>
           </div>
         </form>
-      </div>
-    </section>
+      </section>
 
-    <!-- Tab 2: Table -->
-    <section class="ui-tab-panel" id="tab-books">
-      <div class="ui-card">
-        <h2 class="ui-heading">Lent books</h2>
-        <div class="ui-table-wrap">
-          <table class="ui-table">
-            <thead>
+      <!-- Tab 2: Table -->
+      <section class="tab-pane fade" id="books" role="tabpanel">
+        <h2 class="h5 mb-3">Lent books</h2>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
               <tr>
                 <th>Title</th>
                 <th>Author</th>
@@ -93,41 +98,42 @@
             <tbody id="loan-table-body"></tbody>
           </table>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Tab 3: Summary -->
-    <section class="ui-tab-panel" id="tab-summary">
-      <div class="ui-grid">
-        <div class="ui-card ui-stat">
-          <span class="ui-stat-label">Total loans</span>
-          <span class="ui-stat-value" id="total-loans">0</span>
+      <!-- Tab 3: Summary -->
+      <section class="tab-pane fade" id="summary" role="tabpanel">
+        <h2 class="h5 mb-3">Summary</h2>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="card text-center">
+              <div class="card-body">
+                <p class="text-secondary mb-1">Total loans</p>
+                <p class="display-5 fw-bold mb-0" id="total-loans">0</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="card text-center border-danger">
+              <div class="card-body">
+                <p class="text-secondary mb-1">Overdue loans</p>
+                <p class="display-5 fw-bold text-danger mb-0" id="overdue-loans">0</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="ui-card ui-stat ui-stat-danger">
-          <span class="ui-stat-label">Overdue loans</span>
-          <span class="ui-stat-value" id="overdue-loans">0</span>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
-    <footer class="ui-footer">
+    <footer class="text-center text-secondary small">
       Source code:
-      <a class="ui-link" href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">GitHub repository</a>
+      <a href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">GitHub repository</a>
     </footer>
   </main>
 
-  <!-- JS library -->
+  <!-- JavaScript library: jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap JS (needed for the tabs) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="app.js"></script>
-  <script>
-    BookLending.init({
-      form: "#loan-form",
-      tableBody: "#loan-table-body",
-      totalEl: "#total-loans",
-      overdueEl: "#overdue-loans",
-      tabs: "#tabs",
-      listTab: "tab-books",
-      emptyText: "No books lent yet. Add one in the \"Lend a book\" tab."
-    });
-  </script>
 </body>
 </html>
