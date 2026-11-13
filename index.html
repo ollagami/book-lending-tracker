@@ -14,6 +14,12 @@
       <p class="ui-subtitle">Keep track of the books you lend out and when they are due back.</p>
     </header>
 
+    <!-- Tabs -->
+    <nav class="ui-tabs" id="tabs" aria-label="Sections">
+      <button type="button" class="ui-tab" data-tab="tab-lend">Lend a book</button>
+      <button type="button" class="ui-tab" data-tab="tab-books">Lent books</button>
+      <button type="button" class="ui-tab" data-tab="tab-summary">Summary</button>
+    </nav>
 
     <!-- Tab 1: Form -->
     <section class="ui-tab-panel" id="tab-lend">
@@ -106,7 +112,7 @@
 
     <footer class="ui-footer">
       Source code:
-      <a class="ui-link" href="https://github.com/ollagami/book-lending-tracker">GitHub repository</a>
+      <a class="ui-link" href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">GitHub repository</a>
     </footer>
   </main>
 
@@ -118,7 +124,9 @@
       tableBody: "#loan-table-body",
       totalEl: "#total-loans",
       overdueEl: "#overdue-loans",
-      emptyText: "No books lent yet. Add one above."
+      tabs: "#tabs",
+      listTab: "tab-books",
+      emptyText: "No books lent yet. Add one in the \"Lend a book\" tab."
     });
   </script>
 </body>
