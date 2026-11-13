@@ -1,6 +1,7 @@
 /* ==========================================================================
    Book Lending Tracker
-   App logic built only on the MiniUI JS library (miniui.js).
+   App logic built only on the MiniUI JS library:
+   https://github.com/ollagami/js-library
    ========================================================================== */
 (function (UI) {
   "use strict";

@@ -2,6 +2,8 @@
 
 A page that tracks lent books, built with only HTML, CSS and JavaScript.
 
+**Live:** https://book-lending-tracker-app.pages.dev
+
 ## Features
 - Form with required fields: Title, Author, Borrower, Due date, Genre
 - Table with columns: Title, Author, Borrower, Due date, Genre, Status, Action
@@ -9,19 +11,16 @@ A page that tracks lent books, built with only HTML, CSS and JavaScript.
 - Mark a book as returned or delete a loan
 - Data is saved in the browser (localStorage)
 
-## Libraries (reusable in any project)
-| File | Library | What it gives you |
-|------|---------|-------------------|
-| `styles.css` | **MiniUI CSS** | Design tokens + `ui-` classes: container, grid, card, form fields, buttons, table, badges, stats |
-| `miniui.js` | **MiniUI JS** | `window.MiniUI`: DOM helpers, localStorage store, form validation, table rendering, date helpers, badge/button components |
+## Libraries
+This project uses only my own two libraries. Each one lives in its own repository and can be used in any project:
 
-The page uses only these two libraries. `app.js` contains the app logic and calls `MiniUI`.
+| Library | Repository | CDN link |
+|---------|------------|----------|
+| CSS library (MiniUI CSS) | https://github.com/ollagami/css-library | `https://cdn.jsdelivr.net/gh/ollagami/css-library@main/library.css` |
+| JS library (MiniUI JS) | https://github.com/ollagami/js-library | `https://cdn.jsdelivr.net/gh/ollagami/js-library@main/library.js` |
 
-To reuse them in another project, copy `styles.css` and `miniui.js` and add:
-```html
-<link rel="stylesheet" href="styles.css">
-<script src="miniui.js"></script>
-```
+- `styles.css` only imports the CSS library.
+- `app.js` contains the app logic and uses only the JS library (`window.MiniUI`).
 
 ## Workflow
 Every feature was added to `main` through its own branch and Pull Request.
