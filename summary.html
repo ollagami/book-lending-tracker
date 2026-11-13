@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Summary</title>
+  <!-- CSS library: Bootstrap -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="index.html">Book Lending Tracker</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-nav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="add.html">Lend a book</a></li>
+            <li class="nav-item"><a class="nav-link" href="books.html">Lent books</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="summary.html">Summary</a></li>
+          </ul>
+          <span class="navbar-text clock" id="clock">--:--:--</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container py-4">
+    <h1 class="h3 mb-4">Summary</h1>
+    <!-- Summary area, updated by JavaScript -->
+    <section class="row g-3 mb-4">
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span class="stat-label">Total loans</span>
+            <span class="stat-value" id="stat-total">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 shadow-sm border-danger">
+          <div class="card-body">
+            <span class="stat-label">Overdue loans</span>
+            <span class="stat-value text-danger" id="stat-overdue">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span class="stat-label">Returned</span>
+            <span class="stat-value" id="stat-returned">0</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <span class="stat-label">Next due</span>
+            <span class="stat-value stat-small" id="stat-next">none</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 card-title">Overdue loans</h2>
+        <ul class="list-group list-group-flush" id="overdue-list"></ul>
+        <p class="text-secondary mb-0" id="no-overdue">No overdue loans. </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-3 text-center text-secondary small">
+    Book Lending Tracker &middot;
+    <a href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
+  </footer>
+
+  <div class="toast-message" id="toast"></div>
+
+  <!-- JavaScript library: Bootstrap bundle -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <!-- Our own JavaScript library -->
+  <script src="app.js"></script>
+  <script src="summary.js"></script>
+</body>
+</html>
