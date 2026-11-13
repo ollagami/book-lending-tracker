@@ -4,136 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Lending Tracker</title>
-
-  <!-- CSS library: Bootstrap 5 -->
+  <!-- CSS library: Bootstrap -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-light">
+<body>
+
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="index.html">Book Lending Tracker</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="main-nav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="add.html">Lend a book</a></li>
+            <li class="nav-item"><a class="nav-link" href="books.html">Lent books</a></li>
+            <li class="nav-item"><a class="nav-link" href="summary.html">Summary</a></li>
+          </ul>
+          <span class="navbar-text clock" id="clock">--:--:--</span>
+        </div>
+      </div>
+    </nav>
+  </header>
+
   <main class="container py-4">
-    <header class="mb-4">
-      <h1 class="h2 fw-bold">Book Lending Tracker</h1>
-      <p class="text-secondary mb-0">Keep track of the books you lend out and when they are due back.</p>
-    </header>
 
-    <!-- Tabs -->
-    <ul class="nav nav-tabs" id="tabs" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="lend-tab" data-bs-toggle="tab" data-bs-target="#lend" type="button" role="tab">Lend a book</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="books-tab" data-bs-toggle="tab" data-bs-target="#books" type="button" role="tab">Lent books</button>
-      </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab">Summary</button>
-      </li>
-    </ul>
+    <section class="p-4 p-md-5 mb-4 bg-primary text-white rounded-3">
+      <h1 class="display-6 fw-bold">Track the books you lend</h1>
+      <p class="lead mb-4">
+        Write down who borrowed which book and when it is due back.
+        Everything is saved in your browser with <strong>localStorage</strong>,
+        so it is still here after you close the tab.
+      </p>
+      <a class="btn btn-light btn-lg" href="add.html">Lend a book</a>
+    </section>
 
-    <div class="tab-content bg-white border border-top-0 rounded-bottom p-4 mb-4">
+    <section class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h4 card-title">Pages in this application</h2>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item px-0"><a href="add.html">Lend a book</a> with a validated form (all fields are required).</li>
+          <li class="list-group-item px-0"><a href="books.html">Lent books</a> shows every loan in a table, with search, filter, edit, return and delete.</li>
+          <li class="list-group-item px-0"><a href="summary.html">Summary</a> shows total loans and overdue loans.</li>
+        </ul>
+      </div>
+    </section>
 
-      <!-- Tab 1: Form -->
-      <section class="tab-pane fade show active" id="lend" role="tabpanel">
-        <h2 class="h5 mb-3">Lend a book</h2>
-        <form id="loan-form" class="row g-3" novalidate>
-          <div class="col-md-4">
-            <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="title" name="title" required>
-            <div class="invalid-feedback">Title is required.</div>
-          </div>
-          <div class="col-md-4">
-            <label for="author" class="form-label">Author <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="author" name="author" required>
-            <div class="invalid-feedback">Author is required.</div>
-          </div>
-          <div class="col-md-4">
-            <label for="borrower" class="form-label">Borrower <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="borrower" name="borrower" required>
-            <div class="invalid-feedback">Borrower is required.</div>
-          </div>
-          <div class="col-md-4">
-            <label for="dueDate" class="form-label">Due date <span class="text-danger">*</span></label>
-            <input type="date" class="form-control" id="dueDate" name="dueDate" required>
-            <div class="invalid-feedback">Due date is required.</div>
-          </div>
-          <div class="col-md-4">
-            <label for="genre" class="form-label">Genre <span class="text-danger">*</span></label>
-            <select class="form-select" id="genre" name="genre" required>
-              <option value="">Select a genre</option>
-              <option>Fiction</option>
-              <option>Non-fiction</option>
-              <option>Fantasy</option>
-              <option>Science Fiction</option>
-              <option>Mystery</option>
-              <option>Romance</option>
-              <option>Biography</option>
-              <option>History</option>
-              <option>Science</option>
-              <option>Other</option>
-            </select>
-            <div class="invalid-feedback">Genre is required.</div>
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-primary">Add loan</button>
-            <button type="reset" class="btn btn-outline-secondary">Clear</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- Tab 2: Table -->
-      <section class="tab-pane fade" id="books" role="tabpanel">
-        <h2 class="h5 mb-3">Lent books</h2>
-        <div class="table-responsive">
-          <table class="table table-hover align-middle">
-            <thead class="table-light">
-              <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Borrower</th>
-                <th>Due date</th>
-                <th>Genre</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="loan-table-body"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- Tab 3: Summary -->
-      <section class="tab-pane fade" id="summary" role="tabpanel">
-        <h2 class="h5 mb-3">Summary</h2>
-        <div class="row g-3">
-          <div class="col-sm-6">
-            <div class="card text-center">
-              <div class="card-body">
-                <p class="text-secondary mb-1">Total loans</p>
-                <p class="display-5 fw-bold mb-0" id="total-loans">0</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="card text-center border-danger">
-              <div class="card-body">
-                <p class="text-secondary mb-1">Overdue loans</p>
-                <p class="display-5 fw-bold text-danger mb-0" id="overdue-loans">0</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <footer class="text-center text-secondary small">
-      Source code:
-      <a href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">GitHub repository</a>
-    </footer>
   </main>
 
-  <!-- JavaScript library: jQuery -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <!-- Bootstrap JS (needed for the tabs) -->
+  <footer class="py-3 text-center text-secondary small">
+    Book Lending Tracker &middot;
+    <a href="https://github.com/ollagami/book-lending-tracker" target="_blank" rel="noopener noreferrer">Source code on GitHub</a>
+  </footer>
+
+  <div class="toast-message" id="toast"></div>
+
+  <!-- JavaScript library: Bootstrap bundle -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <!-- Our own JavaScript library -->
   <script src="app.js"></script>
-</body>
+  </body>
 </html>
