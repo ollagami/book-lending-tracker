@@ -1,1 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Lending Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="ui-container ui-stack">
+    <header>
+      <h1 class="ui-title">Book Lending Tracker</h1>
+      <p class="ui-subtitle">Keep track of the books you lend out and when they are due back.</p>
+    </header>
 
+    <!-- Summary -->
+    <section class="ui-grid" aria-label="Summary">
+      <div class="ui-card ui-stat">
+        <span class="ui-stat-label">Total loans</span>
+        <span class="ui-stat-value" id="total-loans">0</span>
+      </div>
+      <div class="ui-card ui-stat ui-stat-danger">
+        <span class="ui-stat-label">Overdue loans</span>
+        <span class="ui-stat-value" id="overdue-loans">0</span>
+      </div>
+    </section>
+
+    <!-- Form -->
+    <section class="ui-card">
+      <h2 class="ui-heading">Lend a book</h2>
+      <form id="loan-form" novalidate>
+        <div class="ui-grid">
+          <div class="ui-field">
+            <label class="ui-label" for="title">Title <span class="ui-required">*</span></label>
+            <input class="ui-input" type="text" id="title" name="title" required>
+            <span class="ui-error" data-error-for="title"></span>
+          </div>
+          <div class="ui-field">
+            <label class="ui-label" for="author">Author <span class="ui-required">*</span></label>
+            <input class="ui-input" type="text" id="author" name="author" required>
+            <span class="ui-error" data-error-for="author"></span>
+          </div>
+          <div class="ui-field">
+            <label class="ui-label" for="borrower">Borrower <span class="ui-required">*</span></label>
+            <input class="ui-input" type="text" id="borrower" name="borrower" required>
+            <span class="ui-error" data-error-for="borrower"></span>
+          </div>
+          <div class="ui-field">
+            <label class="ui-label" for="dueDate">Due date <span class="ui-required">*</span></label>
+            <input class="ui-input" type="date" id="dueDate" name="dueDate" required>
+            <span class="ui-error" data-error-for="dueDate"></span>
+          </div>
+          <div class="ui-field">
+            <label class="ui-label" for="genre">Genre <span class="ui-required">*</span></label>
+            <select class="ui-select" id="genre" name="genre" required>
+              <option value="">Select a genre</option>
+              <option>Fiction</option>
+              <option>Non-fiction</option>
+              <option>Fantasy</option>
+              <option>Science Fiction</option>
+              <option>Mystery</option>
+              <option>Romance</option>
+              <option>Biography</option>
+              <option>History</option>
+              <option>Science</option>
+              <option>Other</option>
+            </select>
+            <span class="ui-error" data-error-for="genre"></span>
+          </div>
+        </div>
+        <div class="ui-actions">
+          <button type="submit" class="ui-btn ui-btn-primary">Add loan</button>
+          <button type="reset" class="ui-btn">Clear</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Table -->
+    <section class="ui-card">
+      <h2 class="ui-heading">Lent books</h2>
+      <div class="ui-table-wrap">
+        <table class="ui-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Borrower</th>
+              <th>Due date</th>
+              <th>Genre</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="loan-table-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="miniui.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
